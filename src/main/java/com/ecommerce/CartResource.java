@@ -15,14 +15,10 @@ public class CartResource {
     @Path("/init")
     @Transactional
     public List<Product> init() {
-
         CartItem.deleteAll();
-
         Cart.deleteAll();
-
         Product.deleteAll();
 
- 
         try {
             Product.getEntityManager().createNativeQuery("DELETE FROM sqlite_sequence").executeUpdate();
         } catch (Exception e) {
@@ -32,18 +28,14 @@ public class CartResource {
         Product.add("Laptop", 1200.00, 10);
         Product.add("Mouse", 25.00, 50);
         Product.add("Monitor", 300.00, 20);
-
-
         return Product.listAll();
     }
-
 
     @GET
     @Path("/products")
     public List<Product> getAllProducts() {
         return Product.listAll();
     }
-
 
     @POST
     @Path("/product")
@@ -53,12 +45,10 @@ public class CartResource {
         return Response.status(201).entity(product).build();
     }
 
-
     @GET
     public List<Cart> getAll() {
         return Cart.listAll();
     }
-
 
     @POST
     @Path("/client/{name}")
@@ -70,7 +60,6 @@ public class CartResource {
         cart.persist();
         return cart;
     }
-
 
     @POST
     @Path("/{cartId}/product/{productId}/{qty}")
@@ -109,11 +98,9 @@ public class CartResource {
 
             item.quantity += qty;
         }
-
         cart.persist(); 
         return Response.ok(cart).build();
     }
-
 
     @PUT
     @Path("/item/{itemId}/{qty}")
@@ -121,7 +108,6 @@ public class CartResource {
     public Response updateQty(@PathParam("itemId") Long itemId, @PathParam("qty") int qty) {
         CartItem item = CartItem.findById(itemId);
         if (item == null) return Response.status(404).build();
-        
         item.quantity = qty;
         return Response.ok(item).build();
     }
@@ -140,7 +126,6 @@ public class CartResource {
         }
         return Response.status(404).build();
     }
-
 
     @POST
     @Path("/{cartId}/checkout")
@@ -161,3 +146,4 @@ public class CartResource {
         return Response.ok(cart).build();
     }
 }
+
